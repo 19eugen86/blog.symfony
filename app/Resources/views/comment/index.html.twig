@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Comments list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Post</th>
+                <th>Comment</th>
+                <th>Userfrom</th>
+                <th>Userto</th>
+                <th>Postedon</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td><a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.id }}</a></td>
+                <td>{{ comment.post }}</td>
+                <td>{{ comment.comment }}</td>
+                <td>{{ comment.userFrom }}</td>
+                <td>{{ comment.userTo }}</td>
+                <td>{% if comment.postedOn %}{{ comment.postedOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('comment_show', { 'id': comment.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('comment_edit', { 'id': comment.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('comment_new') }}">Create a new comment</a>
+        </li>
+    </ul>
+{% endblock %}
