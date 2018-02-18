@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,11 +23,21 @@ class Comment
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="post", type="integer")
+     * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
+     * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      */
     private $post;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="replies")
+     * @ORM\JoinColumn(name="parent_comment_id", referencedColumnName="id")
+     */
+    private $parentComment;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="parentComment")
+     */
+    private $replies;
 
     /**
      * @var string
@@ -36,18 +47,10 @@ class Comment
     private $comment;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="userFrom", type="integer")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $userFrom;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="userTo", type="integer", nullable=true)
-     */
-    private $userTo;
+    private $user;
 
     /**
      * @var \DateTime
@@ -55,6 +58,14 @@ class Comment
      * @ORM\Column(name="posted_on", type="datetime")
      */
     private $postedOn;
+
+    /**
+     * Comment constructor.
+     */
+    public function __construct()
+    {
+        $this->replies = new ArrayCollection();
+    }
 
 
     /**
@@ -92,6 +103,38 @@ class Comment
     }
 
     /**
+     * @return mixed
+     */
+    public function getParentComment()
+    {
+        return $this->parentComment;
+    }
+
+    /**
+     * @param mixed $parentComment
+     */
+    public function setParentComment($parentComment)
+    {
+        $this->parentComment = $parentComment;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReplies()
+    {
+        return $this->replies;
+    }
+
+    /**
+     * @param mixed $replies
+     */
+    public function setReplies($replies)
+    {
+        $this->replies = $replies;
+    }
+
+    /**
      * Set comment
      *
      * @param string $comment
@@ -118,13 +161,13 @@ class Comment
     /**
      * Set userFrom
      *
-     * @param integer $userFrom
+     * @param integer $user
      *
      * @return Comment
      */
-    public function setUserFrom($userFrom)
+    public function setUser($user)
     {
-        $this->userFrom = $userFrom;
+        $this->user = $user;
 
         return $this;
     }
@@ -134,33 +177,9 @@ class Comment
      *
      * @return int
      */
-    public function getUserFrom()
+    public function getUser()
     {
-        return $this->userFrom;
-    }
-
-    /**
-     * Set userTo
-     *
-     * @param integer $userTo
-     *
-     * @return Comment
-     */
-    public function setUserTo($userTo)
-    {
-        $this->userTo = $userTo;
-
-        return $this;
-    }
-
-    /**
-     * Get userTo
-     *
-     * @return int
-     */
-    public function getUserTo()
-    {
-        return $this->userTo;
+        return $this->user;
     }
 
     /**
@@ -186,5 +205,6 @@ class Comment
     {
         return $this->postedOn;
     }
+
 }
 

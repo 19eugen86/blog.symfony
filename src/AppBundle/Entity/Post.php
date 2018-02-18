@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,9 +37,8 @@ class Post
     private $body;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="user", type="integer")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="posts")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
@@ -49,6 +49,32 @@ class Post
      */
     private $postedOn;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="posts")
+     * @ORM\JoinTable(name="posts_categories")
+     */
+    private $categories;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Asset", inversedBy="posts")
+     * @ORM\JoinTable(name="posts_assets")
+     */
+    private $assets;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
+     */
+    private $comments;
+
+    /**
+     * Post constructor.
+     */
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        $this->assets = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -154,6 +180,54 @@ class Post
     public function getPostedOn()
     {
         return $this->postedOn;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param mixed $categories
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAssets()
+    {
+        return $this->assets;
+    }
+
+    /**
+     * @param mixed $assets
+     */
+    public function setAssets($assets)
+    {
+        $this->assets = $assets;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
     }
 }
 

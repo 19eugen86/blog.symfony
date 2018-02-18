@@ -13,3 +13,8 @@ body {
     padding-top: 56px;
   }
 }
+
+.nav-text {
+  color: rgba(255,255,255,.5);
+  padding: .5rem;
+}

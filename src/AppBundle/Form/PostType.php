@@ -13,7 +13,7 @@ class PostType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title')->add('body')->add('user')->add('postedOn');
+        $builder->add('title')->add('body')->add('categories');
     }/**
      * {@inheritdoc}
      */

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +29,18 @@ class Asset
      */
     private $asset;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Post", mappedBy="assets")
+     */
+    private $posts;
+
+    /**
+     * Asset constructor.
+     */
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -61,6 +74,14 @@ class Asset
     public function getAsset()
     {
         return $this->asset;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPosts()
+    {
+        return $this->posts;
     }
 }
 

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +29,18 @@ class Category
      */
     private $title;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Post", mappedBy="categories")
+     */
+    private $posts;
+
+    /**
+     * Category constructor.
+     */
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -59,6 +72,19 @@ class Category
      * @return string
      */
     public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPosts()
+    {
+        return $this->posts;
+    }
+
+    public function __toString()
     {
         return $this->title;
     }

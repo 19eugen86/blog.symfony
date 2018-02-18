@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Post controller.
@@ -40,6 +41,9 @@ class PostController extends Controller
     public function newAction(Request $request)
     {
         $post = new Post();
+        $post->setUser($this->getUser());
+        $post->setPostedOn(new \DateTime());
+
         $form = $this->createForm('AppBundle\Form\PostType', $post);
         $form->handleRequest($request);
 

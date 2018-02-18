@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8"></div>
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+            <!-- Side Menu Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Manage</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="{{ path('admin_category_index') }}">Categories</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('admin_post_index') }}">Posts</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+{% endblock %}
