@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Category;
 
 /**
  * PostRepository
@@ -10,4 +11,14 @@ namespace AppBundle\Repository;
  */
 class PostRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByCategory(Category $category)
+    {
+        $query = $this->createQueryBuilder('post')
+            ->innerJoin('post.categories', 'categories')
+            ->where('categories.id = :category_id')
+            ->setParameter('category_id', $category->getId())
+            ->getQuery();
+
+        return $query->execute();
+    }
 }

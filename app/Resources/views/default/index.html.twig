@@ -55,17 +55,17 @@
                                 <h5 class="mt-0">{{ comment.user.username }}</h5>
                                 {{ comment.comment }}
 
-                                {#{% if comment.replies %}#}
-                                {#{% for reply in comment.replies %}#}
-                                {#<div class="media mt-4">#}
-                                    {#<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
-                                    {#<div class="media-body">#}
-                                        {#<h5 class="mt-0">{{ reply.user.username }}</h5>#}
-                                        {#{{ reply.comment }}#}
-                                    {#</div>#}
-                                {#</div>#}
-                                {#{% endfor %}#}
-                                {#{% endif %}#}
+                                {% if comment.replies %}
+                                {% for reply in comment.replies %}
+                                <div class="media mt-4">
+                                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                                    <div class="media-body">
+                                        <h5 class="mt-0">{{ reply.user.username }}</h5>
+                                        {{ reply.comment }}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
                             </div>
                         </div>
                         {% endfor %}
@@ -88,7 +88,7 @@
                             {% for category in categories %}
                                 <ul class="list-unstyled mb-0">
                                     <li>
-                                        <a href="#">{{ category.title }}</a>
+                                        <a href="{{ path('category_posts', {'id': category.id}) }}">{{ category.title }}</a>
                                     </li>
                                 </ul>
                             {% endfor %}
