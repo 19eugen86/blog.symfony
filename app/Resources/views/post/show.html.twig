@@ -1,44 +1,46 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Post</h1>
+<div class="container mb-3">
+    <div class="row col-md-12">
+        <div class="col-md-8">
+            <div class="row">
+                <!-- Post Content Column -->
+                <div class="col-lg-12">
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ post.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ post.title }}</td>
-            </tr>
-            <tr>
-                <th>Body</th>
-                <td>{{ post.body }}</td>
-            </tr>
-            <tr>
-                <th>User</th>
-                <td>{{ post.user }}</td>
-            </tr>
-            <tr>
-                <th>Postedon</th>
-                <td>{% if post.postedOn %}{{ post.postedOn|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+                    <!-- Title -->
+                    <h1 class="mt-4">{{ post.title }} <a href="{{ path('admin_post_edit', { 'id': post.id }) }}"><i class="fas fa-pencil-alt"></i></a></h1>
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_post_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('admin_post_edit', { 'id': post.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                    <!-- Author -->
+                    <p class="lead">
+                        by
+                        <a href="{{ path('fos_user_profile_show') }}">{{ post.user.username }}</a>
+                    </p>
+
+                    <hr>
+
+                    <!-- Date/Time -->
+                    <p>Posted on {{ post.postedOn|date("F jS \\a\\t g:ia") }}</p>
+
+                    <hr>
+
+                    <!-- Preview Image -->
+                    {#<img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">#}
+                    {#<hr>#}
+
+                    <!-- Post Content -->
+                    <p>{{ post.body }}</p>
+
+                    <hr>
+
+                    <a href="{{ path('admin_post_index') }}">Back to the list</a>
+                </div>
+            </div>
+        </div>
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+            {{ include('admin/sidebar.html.twig') }}
+        </div>
+    </div>
+</div>
 {% endblock %}

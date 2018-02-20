@@ -1,21 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Post edit</h1>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="row mt-3 mb-2">
+                <div class="col-md-12 text-left">
+                    <h4>Edit post</h4>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-12 text-left">
+                    {{ form_start(edit_form) }}
+                        {{ form_errors(edit_form.title) }}
+                        {{ form_label(edit_form.title) }}
+                        {{ form_widget(edit_form.title, {'attr': {'class': 'form-control mb-3'}}) }}
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+                        {{ form_errors(edit_form.body) }}
+                        {{ form_label(edit_form.body) }}
+                        {{ form_widget(edit_form.body, {'attr': {'class': 'form-control mb-3'}}) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_post_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                        {{ form_errors(edit_form.categories) }}
+                        {{ form_label(edit_form.categories) }}
+                        {{ form_widget(edit_form.categories, {'attr': {'class': 'form-control mb-3'}}) }}
+
+                        <input class="btn btn-primary mt-2" type="submit" value="Edit" />
+                    {{ form_end(edit_form) }}
+                </div>
+            </div>
+            <a href="{{ path('admin_post_index') }}" class="text-center new-account">Back to the list</a>
+            <hr>
+        </div>
+    </div>
+</div>
 {% endblock %}

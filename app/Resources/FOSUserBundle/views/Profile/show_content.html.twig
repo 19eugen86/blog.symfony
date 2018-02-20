@@ -1,6 +1,14 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<div class="fos_user_user_show">
-    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
-    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+<div class="col-md-4">
+    <div class="account-wall">
+        <form class="form-signin">
+            <label for="username">{{ 'profile.show.username'|trans }}</label>
+            <input id="username" name="username" type="text" class="form-control mb-2" value="{{ user.username }}" disabled="disabled">
+
+            <label for="email">{{ 'profile.show.email'|trans }}</label>
+            <input id="email" name="email" type="email" class="form-control mb-2" value="{{ user.email }}" disabled="disabled">
+        </form>
+    </div>
+    <hr>
 </div>

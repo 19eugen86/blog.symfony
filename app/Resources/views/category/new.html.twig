@@ -1,16 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Category creation</h1>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_category_index') }}">Back to the list</a>
-        </li>
-    </ul>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="row mt-3 mb-2">
+                <div class="col-md-12 text-center">
+                    <h4>New category</h4>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-12 text-center">
+                    {{ form_start(form, {'attr': {'class': 'form-signin'}}) }}
+                        {{ form_errors(form.title) }}
+                        {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Title'}}) }}
+                        <input class="btn btn-primary btn-block" type="submit" value="Create" />
+                    {{ form_end(form) }}
+                </div>
+            </div>
+            <a href="{{ path('admin_category_index') }}" class="text-center new-account">Back to the list</a>
+            <hr>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Category
@@ -13,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
+    const NUM_ITEMS = 5;
+
     /**
      * @var int
      *
@@ -26,6 +29,7 @@ class Category
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $title;
 

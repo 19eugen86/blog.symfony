@@ -42,7 +42,7 @@ class DefaultController extends Controller
     /**
      * @Route("/category/{id}/posts", name="category_posts", requirements={"id"="\d+"})
      */
-    public function filterAction(Category $category)
+    public function filterAction(Request $request, Category $category)
     {
         $categories = $this->getDoctrine()
             ->getRepository(Category::class)
@@ -52,9 +52,16 @@ class DefaultController extends Controller
             ->getRepository(Post::class)
             ->findByCategory($category);
 
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $posts,
+            $request->query->getInt('page', 1),
+            Post::NUM_ITEMS
+        );
+
         return $this->render('default/index.html.twig', [
             'categories' => $categories,
-            'posts' => $posts
+            'posts' => $pagination
         ]);
     }
 }
