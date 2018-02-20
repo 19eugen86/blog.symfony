@@ -49,10 +49,12 @@
                     <div class="media-body">
                         <h5 class="mt-0">{{ comment.user.username }}</h5>
                         {{ comment.comment }}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <p class="font-italic">
                             {#<a href="{{ path('comment_delete', {'post': post.id, 'id': comment.id}) }}"><i class="fas fa-reply"></i> Reply</a> | #}
                             <a href="{{ path('comment_delete', {'post': post.id, 'id': comment.id}) }}"><i class="fas fa-trash-alt"></i> Delete</a>
                         </p>
+                        {% endif %}
 
                         {% if comment.replies %}
                             {% for reply in comment.replies %}
