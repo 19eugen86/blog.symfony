@@ -81,11 +81,9 @@ class Comment
     /**
      * Set post
      *
-     * @param integer $post
-     *
      * @return Comment
      */
-    public function setPost($post)
+    public function setPost(Post $post)
     {
         $this->post = $post;
 

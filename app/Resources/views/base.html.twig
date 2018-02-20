@@ -32,7 +32,7 @@
             <ul class="navbar-nav ml-auto">
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                     <li class="nav-item nav-text">
-                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
+                        Logged in as <a class="nav-link" href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a>
                     </li>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <li class="nav-item nav-text">|</li>

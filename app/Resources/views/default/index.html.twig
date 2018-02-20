@@ -6,7 +6,6 @@
         <div class="col-md-8">
             {% for post in posts %}
                 <div class="row">
-
                     <!-- Post Content Column -->
                     <div class="col-lg-12">
 
@@ -32,49 +31,19 @@
 
                         <!-- Post Content -->
                         <p>{{ post.body }}</p>
+
                         <hr>
 
-                        <!-- Comments Form -->
-                        <div class="card my-4">
-                            <h5 class="card-header">Leave a Comment:</h5>
-                            <div class="card-body">
-                                <form method="post" action="">
-                                    <div class="form-group">
-                                        <textarea class="form-control" rows="3"></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </form>
-                            </div>
-                        </div>
-
-                        <!-- Comment with nested comments -->
-                        {% for comment in post.comments %}
-                        <div class="media mb-4">
-                            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                            <div class="media-body">
-                                <h5 class="mt-0">{{ comment.user.username }}</h5>
-                                {{ comment.comment }}
-
-                                {% if comment.replies %}
-                                {% for reply in comment.replies %}
-                                <div class="media mt-4">
-                                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                                    <div class="media-body">
-                                        <h5 class="mt-0">{{ reply.user.username }}</h5>
-                                        {{ reply.comment }}
-                                    </div>
-                                </div>
-                                {% endfor %}
-                                {% endif %}
-                            </div>
-                        </div>
-                        {% endfor %}
-
+                        <!-- Comment -->
+                        <p class="text-right"><a href="{{ path('comment_index', {'id': post.id}) }}">Leave a comment</a></p>
                     </div>
-
                 </div>
                 <!-- /.row -->
             {% endfor %}
+            <div class="pagination col-md-12 text-left">
+                {{ knp_pagination_render(posts) }}
+            </div>
+            <hr>
         </div>
         <!-- Sidebar Widgets Column -->
         <div class="col-md-4">

@@ -1,47 +1,74 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Comments list</h1>
+<div class="container">
+    <div class="row col-md-12">
+        <div class="row">
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Post</th>
-                <th>Comment</th>
-                <th>Userfrom</th>
-                <th>Userto</th>
-                <th>Postedon</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for comment in comments %}
-            <tr>
-                <td><a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.id }}</a></td>
-                <td>{{ comment.post }}</td>
-                <td>{{ comment.comment }}</td>
-                <td>{{ comment.userFrom }}</td>
-                <td>{{ comment.userTo }}</td>
-                <td>{% if comment.postedOn %}{{ comment.postedOn|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('comment_show', { 'id': comment.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('comment_edit', { 'id': comment.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <!-- Post Content Column -->
+            <div class="col-lg-12">
 
-    <ul>
-        <li>
-            <a href="{{ path('comment_new') }}">Create a new comment</a>
-        </li>
-    </ul>
+                <!-- Title -->
+                <h1 class="mt-4">{{ post.title }}</h1>
+
+                <!-- Author -->
+                <p class="lead">
+                    by
+                    <a href="{{ path('fos_user_profile_show') }}">{{ post.user.username }}</a>
+                </p>
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p>Posted on {{ post.postedOn|date("F jS \\a\\t g:ia") }}</p>
+
+                <hr>
+
+                <!-- Preview Image -->
+
+                <!-- Post Content -->
+                <p>{{ post.body }}</p>
+
+                <hr>
+
+                <!-- Comments Form -->
+                <div class="card my-4">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                            <div class="form-group">
+                                {{ form_row(form.comment) }}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+                <!-- Comment with nested comments -->
+                {% for comment in comments %}
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">{{ comment.user.username }}</h5>
+                        {{ comment.comment }}
+
+                        {% if comment.replies %}
+                            {% for reply in comment.replies %}
+                                <div class="media mt-4">
+                                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                                    <div class="media-body">
+                                        <h5 class="mt-0">{{ reply.user.username }}</h5>
+                                        {{ reply.comment }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

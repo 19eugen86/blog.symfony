@@ -6,13 +6,17 @@ use AppBundle\Entity\Category;
 use AppBundle\Entity\Post;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class DefaultController
+ */
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $categories = $this->getDoctrine()
             ->getRepository(Category::class)
@@ -22,9 +26,16 @@ class DefaultController extends Controller
             ->getRepository(Post::class)
             ->findAll();
 
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $posts,
+            $request->query->getInt('page', 1),
+            Post::NUM_ITEMS
+        );
+
         return $this->render('default/index.html.twig', [
             'categories' => $categories,
-            'posts' => $posts
+            'posts' => $pagination,
         ]);
     }
 

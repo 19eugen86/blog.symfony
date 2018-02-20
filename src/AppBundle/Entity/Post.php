@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post
 {
+    const NUM_ITEMS = 5;
+
     /**
      * @var int
      *
