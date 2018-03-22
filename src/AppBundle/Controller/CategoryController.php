@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
+use AppBundle\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,9 +24,9 @@ class CategoryController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $categories = $em->getRepository('AppBundle:Category')->findAll();
+        $categories = $this->getDoctrine()
+            ->getRepository(Category::class)
+            ->findAll();
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -34,9 +35,9 @@ class CategoryController extends Controller
             Category::NUM_ITEMS
         );
 
-        return $this->render('category/index.html.twig', array(
+        return $this->render('category/index.html.twig', [
             'categories' => $pagination,
-        ));
+        ]);
     }
 
     /**
@@ -48,7 +49,7 @@ class CategoryController extends Controller
     public function newAction(Request $request)
     {
         $category = new Category();
-        $form = $this->createForm('AppBundle\Form\CategoryType', $category);
+        $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -59,10 +60,10 @@ class CategoryController extends Controller
             return $this->redirectToRoute('admin_category_index');
         }
 
-        return $this->render('category/new.html.twig', array(
+        return $this->render('category/new.html.twig', [
             'category' => $category,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -73,7 +74,7 @@ class CategoryController extends Controller
      */
     public function editAction(Request $request, Category $category)
     {
-        $editForm = $this->createForm('AppBundle\Form\CategoryType', $category);
+        $editForm = $this->createForm(CategoryType::class, $category);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -82,10 +83,10 @@ class CategoryController extends Controller
             return $this->redirectToRoute('admin_category_index');
         }
 
-        return $this->render('category/edit.html.twig', array(
+        return $this->render('category/edit.html.twig', [
             'category' => $category,
             'edit_form' => $editForm->createView()
-        ));
+        ]);
     }
 
     /**

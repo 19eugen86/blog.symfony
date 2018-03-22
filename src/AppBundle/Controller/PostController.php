@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Post;
+use AppBundle\Form\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,9 +24,9 @@ class PostController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $posts = $em->getRepository('AppBundle:Post')->findAll();
+        $posts = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->findAll();
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -34,9 +35,9 @@ class PostController extends Controller
             Post::NUM_ITEMS
         );
 
-        return $this->render('post/index.html.twig', array(
+        return $this->render('post/index.html.twig', [
             'posts' => $pagination,
-        ));
+        ]);
     }
 
     /**
@@ -51,7 +52,7 @@ class PostController extends Controller
         $post->setUser($this->getUser());
         $post->setPostedOn(new \DateTime());
 
-        $form = $this->createForm('AppBundle\Form\PostType', $post);
+        $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -59,13 +60,15 @@ class PostController extends Controller
             $em->persist($post);
             $em->flush();
 
-            return $this->redirectToRoute('admin_post_show', array('id' => $post->getId()));
+            return $this->redirectToRoute('admin_post_show', [
+                'id' => $post->getId()
+            ]);
         }
 
-        return $this->render('post/new.html.twig', array(
+        return $this->render('post/new.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -76,9 +79,9 @@ class PostController extends Controller
      */
     public function showAction(Post $post)
     {
-        return $this->render('post/show.html.twig', array(
+        return $this->render('post/show.html.twig', [
             'post' => $post
-        ));
+        ]);
     }
 
     /**
@@ -89,19 +92,21 @@ class PostController extends Controller
      */
     public function editAction(Request $request, Post $post)
     {
-        $editForm = $this->createForm('AppBundle\Form\PostType', $post);
+        $editForm = $this->createForm(PostType::class, $post);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_post_show', array('id' => $post->getId()));
+            return $this->redirectToRoute('admin_post_show', [
+                'id' => $post->getId()
+            ]);
         }
 
-        return $this->render('post/edit.html.twig', array(
+        return $this->render('post/edit.html.twig', [
             'post' => $post,
             'edit_form' => $editForm->createView()
-        ));
+        ]);
     }
 
     /**

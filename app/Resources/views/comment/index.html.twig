@@ -12,10 +12,7 @@
                 <h1 class="mt-4">{{ post.title }}</h1>
 
                 <!-- Author -->
-                <p class="lead">
-                    by
-                    <a href="{{ path('fos_user_profile_show') }}">{{ post.user.username }}</a>
-                </p>
+                <p class="lead">by {{ post.user.username }}</p>
 
                 <hr>
 

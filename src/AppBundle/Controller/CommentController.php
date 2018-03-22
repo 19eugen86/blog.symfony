@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\Post;
+use AppBundle\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,15 +23,16 @@ class CommentController extends Controller
      */
     public function indexAction(Request $request, Post $post)
     {
-        $em = $this->getDoctrine()->getManager();
-        $comments = $em->getRepository('AppBundle:Comment')->findByPost($post);
+        $comments = $this->getDoctrine()
+            ->getRepository(Comment::class)
+            ->findByPost($post);
 
         $comment = new Comment();
         $comment->setPost($post);
         $comment->setUser($this->getUser());
         $comment->setPostedOn(new \DateTime());
 
-        $form = $this->createForm('AppBundle\Form\CommentType', $comment);
+        $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -38,14 +40,16 @@ class CommentController extends Controller
             $em->persist($comment);
             $em->flush();
 
-            return $this->redirectToRoute('comment_index', array('id' => $post->getId()));
+            return $this->redirectToRoute('comment_index', [
+                'id' => $post->getId()
+            ]);
         }
 
-        return $this->render('comment/index.html.twig', array(
+        return $this->render('comment/index.html.twig', [
             'post' => $post,
             'comments' => $comments,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -60,6 +64,8 @@ class CommentController extends Controller
         $em->remove($comment);
         $em->flush();
 
-        return $this->redirectToRoute('comment_index', array('id' => $post));
+        return $this->redirectToRoute('comment_index', [
+            'id' => $post
+        ]);
     }
 }
