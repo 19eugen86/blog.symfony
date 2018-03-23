@@ -48,6 +48,9 @@ class PostController extends Controller
      */
     public function newAction(Request $request)
     {
+
+        dump($request);
+
         $post = new Post();
         $post->setUser($this->getUser());
         $post->setPostedOn(new \DateTime());
@@ -55,15 +58,15 @@ class PostController extends Controller
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($post);
-            $em->flush();
-
-            return $this->redirectToRoute('admin_post_show', [
-                'id' => $post->getId()
-            ]);
-        }
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($post);
+//            $em->flush();
+//
+//            return $this->redirectToRoute('admin_post_show', [
+//                'id' => $post->getId()
+//            ]);
+//        }
 
         return $this->render('post/new.html.twig', [
             'post' => $post,

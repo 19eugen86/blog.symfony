@@ -106,3 +106,11 @@ knp_paginator:
         pagination: '@KnpPaginator/Pagination/sliding.html.twig'     # sliding pagination controls template
         sortable: '@KnpPaginator/Pagination/sortable_link.html.twig' # sort link template
         filtration: '@KnpPaginator/Pagination/filtration.html.twig'  # filters template
+
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        asset:
+            uri_prefix: /assets
+            upload_destination: '%kernel.project_dir%/web/assets'

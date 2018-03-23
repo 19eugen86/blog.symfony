@@ -4,12 +4,16 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Asset
  *
  * @ORM\Table(name="asset")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AssetRepository")
+ *
+ * @Vich\Uploadable
  */
 class Asset
 {
@@ -23,11 +27,32 @@ class Asset
     private $id;
 
     /**
-     * @var string
+     * @Vich\UploadableField(mapping="asset", fileNameProperty="assetName", size="assetSize")
      *
-     * @ORM\Column(name="asset", type="string", length=255)
+     * @var File
      */
-    private $asset;
+    private $assetFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @var string
+     */
+    private $assetName;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @var integer
+     */
+    private $assetSize;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $updatedAt;
 
     /**
      * @ORM\ManyToMany(targetEntity="Post", mappedBy="assets")
@@ -53,27 +78,63 @@ class Asset
     }
 
     /**
-     * Set asset
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the  update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
      *
-     * @param string $asset
-     *
-     * @return Asset
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $asset
      */
-    public function setAsset($asset)
+    public function setAssetFile(?File $asset = null)
     {
-        $this->asset = $asset;
+        $this->assetFile = $asset;
 
-        return $this;
+        if (null !== $asset) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
     }
 
     /**
-     * Get asset
-     *
-     * @return string
+     * @return null|File
      */
-    public function getAsset()
+    public function getAssetFile(): ?File
     {
-        return $this->asset;
+        return $this->assetFile;
+    }
+
+    /**
+     * @param null|string $assetName
+     */
+    public function setAssetName(?string $assetName): void
+    {
+        $this->assetName = $assetName;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getAssetName(): ?string
+    {
+        return $this->assetName;
+    }
+
+    /**
+     * @param int|null $assetSize
+     */
+    public function setAssetSize(?int $assetSize): void
+    {
+        $this->assetSize = $assetSize;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAssetSize(): ?int
+    {
+        return $this->assetSize;
     }
 
     /**

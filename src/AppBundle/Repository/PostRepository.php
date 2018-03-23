@@ -11,6 +11,11 @@ use AppBundle\Entity\Category;
  */
 class PostRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAll()
+    {
+        return $this->findBy([], ['id' => 'DESC']);
+    }
+
     public function findByCategory(Category $category)
     {
         $query = $this->createQueryBuilder('post')
